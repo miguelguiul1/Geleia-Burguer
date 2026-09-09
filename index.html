@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/logo.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0d0b0a" />
+
+    <title>Geléia Burguer | Hambúrguer artesanal em Veleiros, São Paulo</title>
+    <meta
+      name="description"
+      content="Geléia Burguer — hambúrguer artesanal no bairro Veleiros, São Paulo. Peça direto pelo WhatsApp, iFood, Keeta ou 99Food."
+    />
+    <link rel="canonical" href="https://www.geleiaburguer.com.br/" />
+
+    <meta property="og:type" content="restaurant.menu" />
+    <meta property="og:site_name" content="Geléia Burguer" />
+    <meta property="og:title" content="Geléia Burguer | Hambúrguer artesanal em Veleiros, São Paulo" />
+    <meta
+      property="og:description"
+      content="Hambúrguer artesanal no bairro Veleiros, São Paulo. Peça direto pelo canal oficial da Geléia Burguer."
+    />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:image" content="https://www.geleiaburguer.com.br/logo.png" />
+    <!-- TODO: trocar og:image por uma FOTO de hambúrguer em alta resolução (1200x630) quando disponível — logo sozinha funciona pior em compartilhamentos -->
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Geléia Burguer" />
+    <meta
+      name="twitter:description"
+      content="Hambúrguer artesanal no bairro Veleiros, São Paulo."
+    />
+
+    <!--
+      Schema.org Restaurant — dados confirmados no perfil oficial do iFood.
+      TODO: adicionar openingHours (não disponível — funciona só delivery)
+      e image em alta resolução quando houver uma foto de capa oficial.
+    -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Restaurant",
+        "name": "Geléia Burguer",
+        "servesCuisine": "Hambúrgueria",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Avenida Coronel Octaviano de Freitas Costa, 503",
+          "addressLocality": "São Paulo",
+          "addressRegion": "SP",
+          "postalCode": "04773-000",
+          "addressCountry": "BR"
+        },
+        "sameAs": [
+          "https://www.instagram.com/geleiaburguer.oficial"
+        ],
+        "hasMenu": "https://www.ifood.com.br/delivery/sao-paulo-sp/geleia-burger-veleiros/398c0663-f6f9-4df2-9b4a-2ceec58a1c82",
+        "acceptsReservations": "False"
+      }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

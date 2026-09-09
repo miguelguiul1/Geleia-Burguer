@@ -1,0 +1,63 @@
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Work+Sans:wght@400;500;600;700&display=swap");
+@import "tailwindcss";
+
+@theme {
+  /* Preto do emblema da logo — não um preto puro, tem calor de brasa */
+  --color-char: #0d0b0a;
+  --color-char-2: #171310;
+
+  /* Ivory quente para as seções claras (prato/guardanapo) */
+  --color-bone: #f5ecd8;
+  --color-bone-2: #ecdfc0;
+
+  /* Chama — vermelho-laranja das labaredas do emblema, o acento principal */
+  --color-fire: #d8371d;
+  --color-fire-bright: #ef6c1f;
+  --color-fire-dark: #6e1c10;
+
+  /* Dourado do "BURGUER" no emblema — acento secundário, usar com moderação */
+  --color-gold: #f0b429;
+
+  --color-ink: #201a14;
+  --color-cream: #f8f0e0;
+
+  --font-display: "Fraunces", serif;
+  --font-script: "Fraunces", serif;
+  --font-body: "Work Sans", sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-char);
+  color: var(--color-cream);
+  font-family: var(--font-body);
+}
+
+::selection {
+  background-color: var(--color-fire);
+  color: var(--color-cream);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 3px;
+}
+
+.fire-text {
+  background: linear-gradient(100deg, var(--color-fire) 0%, var(--color-fire-bright) 55%, var(--color-gold) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

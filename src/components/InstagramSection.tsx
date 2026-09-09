@@ -3,6 +3,13 @@ import { brand } from "../data/brand";
 import { PhotoSlot } from "./PhotoSlot";
 import { InstagramGlyph } from "./icons/InstagramGlyph";
 
+const feedPhotos = [
+  "/instagram/post-1.webp",
+  "/instagram/post-2.webp",
+  "/instagram/post-3.webp",
+  "/instagram/post-4.webp",
+];
+
 export function InstagramSection() {
   return (
     <section id="instagram" className="bg-char-2">
@@ -32,19 +39,16 @@ export function InstagramSection() {
         </div>
 
         <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-          {Array.from({ length: 4 }).map((_, i) => (
+          {feedPhotos.map((photoUrl, i) => (
             <div key={i} className="aspect-square">
               <PhotoSlot
+                photoUrl={photoUrl}
                 alt={`Post do Instagram da ${brand.name}`}
                 label="Post real do feed"
               />
             </div>
           ))}
         </div>
-        <p className="mt-4 text-sm text-bone/50">
-          Galeria pronta para receber os posts reais do feed — nada aqui é
-          publicação inventada.
-        </p>
       </div>
     </section>
   );

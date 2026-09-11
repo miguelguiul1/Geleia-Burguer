@@ -30,8 +30,8 @@ export const brand = {
   location: {
     neighborhood: "Veleiros",
     city: "São Paulo - SP",
-    fullAddress:
-      "Avenida Coronel Octaviano de Freitas Costa, 503 - Veleiros, São Paulo - SP, CEP 04773-000",
+    // Endereço completo removido a pedido do dono — casa é delivery-only.
+    fullAddress: null as string | null,
     // Delivery-only: o perfil no iFood mostra "não abre" em todos os dias
     // porque esse campo é para atendimento presencial — a casa não tem
     // salão, funciona só por delivery pelos apps. Horário real de pedidos

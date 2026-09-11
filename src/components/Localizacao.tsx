@@ -32,8 +32,8 @@ export function Localizacao() {
                 </p>
               ) : (
                 <p className="mt-1 text-base text-ink/60">
-                  Bairro {location.neighborhood} — número e complemento
-                  pendentes.
+                  Bairro {location.neighborhood}, {location.city} —
+                  atendemos só por delivery.
                 </p>
               )}
             </div>

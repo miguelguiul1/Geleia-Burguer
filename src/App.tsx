@@ -11,6 +11,7 @@ import { StickyOrderBar } from "./components/StickyOrderBar";
 import { ProductModal } from "./components/ProductModal";
 import { CartDrawer } from "./components/CartDrawer";
 import { CheckoutPanel } from "./components/CheckoutPanel";
+import { PaymentReturn } from "./components/PaymentReturn";
 import { CartProvider } from "./context/CartContext";
 import { ProductModalProvider } from "./context/ProductModalContext";
 
@@ -34,6 +35,7 @@ function App() {
           <ProductModal />
           <CartDrawer />
           <CheckoutPanel />
+          <PaymentReturn />
         </div>
       </ProductModalProvider>
     </CartProvider>

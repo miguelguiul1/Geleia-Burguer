@@ -5,7 +5,11 @@ import { brand } from "../data/brand";
 import { formatBRL } from "../utils/format";
 
 type DeliveryType = "delivery" | "retirada";
-type PaymentMethod = "Pix" | "Cartão na entrega" | "Dinheiro na entrega";
+type PaymentMethod =
+  | "Pagar agora (Pix/Cartão)"
+  | "Pix"
+  | "Cartão na entrega"
+  | "Dinheiro na entrega";
 
 function buildWhatsappMessage(params: {
   lines: ReturnType<typeof useCart>["lines"];
@@ -14,7 +18,7 @@ function buildWhatsappMessage(params: {
   phone: string;
   deliveryType: DeliveryType;
   address: string;
-  payment: PaymentMethod;
+  payment: string;
   notes: string;
 }) {
   const { lines, subtotal, name, phone, deliveryType, address, payment, notes } =
@@ -60,9 +64,13 @@ export function CheckoutPanel() {
   const [phone, setPhone] = useState("");
   const [deliveryType, setDeliveryType] = useState<DeliveryType>("delivery");
   const [address, setAddress] = useState("");
-  const [payment, setPayment] = useState<PaymentMethod>("Pix");
+  const [payment, setPayment] = useState<PaymentMethod>(
+    "Pagar agora (Pix/Cartão)"
+  );
   const [notes, setNotes] = useState("");
   const [sent, setSent] = useState(false);
+  const [paying, setPaying] = useState(false);
+  const [payError, setPayError] = useState<string | null>(null);
 
   if (!isCheckoutOpen) return null;
 
@@ -87,6 +95,61 @@ export function CheckoutPanel() {
     window.open(url, "_blank", "noopener,noreferrer");
     clear();
     setSent(true);
+  }
+
+  async function handlePayOnline() {
+    if (!canSubmit || paying) return;
+    setPayError(null);
+    setPaying(true);
+
+    const confirmationMessage = buildWhatsappMessage({
+      lines,
+      subtotal,
+      name,
+      phone,
+      deliveryType,
+      address,
+      payment: "Pago online (Mercado Pago)",
+      notes,
+    });
+
+    const items = lines.map((line) => ({
+      title: line.itemName,
+      quantity: line.quantity,
+      unit_price:
+        line.unitPrice + line.options.reduce((s, o) => s + o.price, 0),
+    }));
+
+    try {
+      const response = await fetch("/api/create-preference", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          items,
+          payerName: name,
+          externalReference: `gb-${Date.now()}`,
+        }),
+      });
+      const data = await response.json();
+
+      if (!response.ok || !data.checkoutUrl) {
+        setPayError(
+          data.error ||
+            "Não foi possível iniciar o pagamento agora. Tente de novo ou peça pelo WhatsApp."
+        );
+        setPaying(false);
+        return;
+      }
+
+      sessionStorage.setItem("gb_pending_whatsapp_message", confirmationMessage);
+      clear();
+      window.location.href = data.checkoutUrl;
+    } catch {
+      setPayError(
+        "Erro de conexão com o pagamento. Tente de novo ou peça pelo WhatsApp."
+      );
+      setPaying(false);
+    }
   }
 
   function handleClose() {
@@ -145,9 +208,9 @@ export function CheckoutPanel() {
           <>
             <div className="flex-1 overflow-y-auto px-5 py-5">
               <p className="mb-5 text-sm leading-relaxed text-bone/60">
-                A Geléia Burguer ainda não tem pagamento online — preencha
-                seus dados e o pedido completo (com preço) abre pronto no
-                WhatsApp oficial pra você confirmar e combinar o pagamento.
+                Pague agora com Pix ou cartão, ou prefira combinar direto
+                pelo WhatsApp — o pedido completo (com preço) é confirmado
+                com a {brand.name} de qualquer jeito.
               </p>
 
               <div className="flex flex-col gap-4">
@@ -220,12 +283,20 @@ export function CheckoutPanel() {
                   </span>
                   <div className="flex flex-wrap gap-2">
                     {(
-                      ["Pix", "Cartão na entrega", "Dinheiro na entrega"] as PaymentMethod[]
+                      [
+                        "Pagar agora (Pix/Cartão)",
+                        "Pix",
+                        "Cartão na entrega",
+                        "Dinheiro na entrega",
+                      ] as PaymentMethod[]
                     ).map((method) => (
                       <button
                         key={method}
                         type="button"
-                        onClick={() => setPayment(method)}
+                        onClick={() => {
+                          setPayment(method);
+                          setPayError(null);
+                        }}
                         className={`rounded-sm border px-3 py-2 text-xs font-semibold transition-colors ${
                           payment === method
                             ? "border-fire bg-fire/10 text-cream"
@@ -237,6 +308,10 @@ export function CheckoutPanel() {
                     ))}
                   </div>
                 </div>
+
+                {payError && (
+                  <p className="text-sm text-red-400">{payError}</p>
+                )}
 
                 <label className="flex flex-col gap-1.5">
                   <span className="text-sm font-semibold text-cream">
@@ -262,15 +337,23 @@ export function CheckoutPanel() {
               </div>
               <button
                 type="button"
-                onClick={handleSubmit}
-                disabled={!canSubmit}
+                onClick={
+                  payment === "Pagar agora (Pix/Cartão)"
+                    ? handlePayOnline
+                    : handleSubmit
+                }
+                disabled={!canSubmit || paying}
                 className={`group flex w-full items-center justify-center gap-2 rounded-sm px-6 py-4 text-base font-semibold transition-colors ${
-                  canSubmit
+                  canSubmit && !paying
                     ? "bg-fire text-cream hover:bg-fire-bright"
                     : "bg-bone/10 text-bone/40"
                 }`}
               >
-                Enviar pedido pelo WhatsApp
+                {payment === "Pagar agora (Pix/Cartão)"
+                  ? paying
+                    ? "Redirecionando..."
+                    : "Pagar agora"
+                  : "Enviar pedido pelo WhatsApp"}
                 <ArrowUpRight
                   size={18}
                   className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"

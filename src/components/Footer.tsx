@@ -35,7 +35,7 @@ export function Footer() {
         </a>
       </div>
       <p className="mx-auto mt-8 max-w-6xl text-xs text-bone/30">
-        {brand.name} · CNPJ {brand.location.cnpj} · {brand.location.fullAddress}
+        {brand.name} · CNPJ {brand.location.cnpj}
       </p>
     </footer>
   );

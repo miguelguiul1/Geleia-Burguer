@@ -22,3 +22,11 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Variáveis de ambiente (segredos nunca vão para o repositório)
+.env
+.env.*
+!.env.example
+
+# Vercel
+.vercel

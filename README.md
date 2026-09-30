@@ -1,32 +1,40 @@
-# React + TypeScript + Vite
+# Protótipo · cardápio online para hamburgueria
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Um cardápio digital para hamburgueria de delivery: o cliente monta o pedido, personaliza os lanches e paga com Pix ou cartão pelo Mercado Pago, sem depender só dos apps de entrega.
 
-Currently, two official plugins are available:
+**No ar:** https://geleia-burguer.vercel.app
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+> Protótipo independente, feito por mim como estudo de design e de produto. Não é o site oficial de nenhum estabelecimento e não tem vínculo com nenhum negócio. Nomes, marcas e imagens de terceiros que aparecem na demonstração pertencem aos seus donos.
 
-## React Compiler
+## O que o protótipo resolve
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Hamburgueria pequena paga uma comissão alta em cada pedido feito pelos apps de delivery. Um cardápio próprio permite vender direto para quem já conhece a casa:
 
-## Expanding the Oxlint configuration
+- **Cardápio com categorias e destaques**, e um modal para escolher adicionais, bebida e opções de combo.
+- **Carrinho** que acompanha a rolagem e mostra o total o tempo todo.
+- **Checkout com Mercado Pago** (Pix, cartão e o que mais a conta aceitar) através de uma função serverless. O token nunca vai para o navegador.
+- **Links para os apps de delivery e para o WhatsApp** para quem preferir pedir por lá.
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+## Tecnologias
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+React, TypeScript, Vite e Tailwind CSS no front. Uma função serverless da Vercel (`api/create-preference.js`) cria a preferência de pagamento no Mercado Pago. Deploy na Vercel.
+
+## Rodando localmente
+
+```bash
+git clone https://github.com/miguelguiul1/Geleia-Burguer.git
+cd Geleia-Burguer
+npm install
+npm run dev
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+O cardápio e o carrinho funcionam só com o front. Para testar o pagamento, use a CLI da Vercel (`vercel dev`) e um token de **teste** do Mercado Pago:
+
+```bash
+cp .env.example .env    # preencha MP_ACCESS_TOKEN com o token de teste
+npx vercel dev
+```
+
+## Licença
+
+O código está sob a licença [MIT](LICENSE). A licença não cobre marcas, logos, fotos nem textos de terceiros.
